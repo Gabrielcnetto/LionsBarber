@@ -1,0 +1,5 @@
+package com.lionsbarbeariaeasecorte.barbearia
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()

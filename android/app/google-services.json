@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1075600342317",
+    "project_id": "lionsbarber-easecorte",
+    "storage_bucket": "lionsbarber-easecorte.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075600342317:android:e4844d7e3fb28f8eada7a4",
+        "android_client_info": {
+          "package_name": "com.lionsbarbeariaeasecorte.barbearia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDffSXDyBCfYjrKb_RYJqWNw1o3-Zxj5Kg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
