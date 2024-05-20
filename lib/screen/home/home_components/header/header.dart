@@ -3,6 +3,7 @@ import 'package:barbershop2/classes/cortecClass.dart';
 import 'package:barbershop2/functions/CorteProvider.dart';
 import 'package:barbershop2/functions/profileScreenFunctions.dart';
 import 'package:barbershop2/screen/home/home_components/profissionalCode.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -31,6 +32,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _listaCortesUsuario;
     valorPoints;
     ajustePoints();
     userProfileIsOk;
@@ -96,6 +98,10 @@ class _HomePageHeaderState extends State<HomePageHeader> {
     });
   }
 
+  void enviarMensagemParaCrashlytics(String mensagem) {
+    FirebaseCrashlytics.instance.log(mensagem);
+  }
+
   CorteClass? _listaCortesUsuario;
 
   double valorPoints = 0;
@@ -122,7 +128,8 @@ class _HomePageHeaderState extends State<HomePageHeader> {
     List<CorteClass> listaGeral =
         Provider.of<CorteProvider>(context, listen: false).userCortesTotal;
     final tamanhoTela = MediaQuery.of(context).size;
-    print(_listaCortesUsuario == null ? "o item é null" : "nao é null");
+    enviarMensagemParaCrashlytics(
+        listaGeral.isEmpty ? "Lista ficou vazia" : "Lista ta normal");
     double heighTelaFinal = tamanhoTela.height;
 
     final double setHeigh = heighTelaFinal > 800
@@ -133,7 +140,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
 
     //PEGANDO O CODIGO ATIVO
 
-    return ConstrainedBox(
+    return Container(
       constraints: BoxConstraints(
         minHeight: setHeigh,
         maxHeight: setHeigh,
@@ -141,10 +148,10 @@ class _HomePageHeaderState extends State<HomePageHeader> {
         maxWidth: widget.widhTela,
       ),
       child: Container(
-        padding: const EdgeInsets.only(top: 5),
+         padding: EdgeInsets.only(top: setHeigh * 0.09),
         child: Stack(
           children: [
-            ConstrainedBox(
+            Container(
               constraints: BoxConstraints(
                 minHeight: setHeigh * 0.85,
                 maxHeight: setHeigh * 0.85,
@@ -162,94 +169,98 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 45, right: 15),
-              child: Positioned(
-                top: 0,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          textAlign: TextAlign.center,
-                          Estabelecimento.nomeLocal,
-                          style: GoogleFonts.openSans(
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Estabelecimento.secondaryColor,
-                            ),
+            Positioned(
+              top: 0,
+              left: 15,
+              right: 15,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        textAlign: TextAlign.center,
+                        Estabelecimento.nomeLocal,
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Estabelecimento.secondaryColor,
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Bem-vindo(a), ${finalName ?? "..."}",
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.openSans(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Você Possui ${(valorPoints * 3).toStringAsFixed(0)} Pontos",
+                              style: GoogleFonts.openSans(
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey.shade700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        CircularProgressWithImage(
+                          totalCortes:
+                              Provider.of<CorteProvider>(context, listen: false)
+                                  .userCortesTotal
+                                  .length,
+                          progress: calcularProgresso(),
+                          imageSize: widget.widhTela / 5.5,
+                          widghTela: widget.widhTela,
+                          imageUrl: urlImagePhoto != null
+                              ? urlImagePhoto!
+                              : Estabelecimento.defaultAvatar,
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Bem-vindo(a), ${finalName ?? "..."}",
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.openSans(
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                "Você Possui ${(valorPoints * 3).toStringAsFixed(0)} Pontos",
-                                style: GoogleFonts.openSans(
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade700,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          CircularProgressWithImage(
-                            totalCortes: Provider.of<CorteProvider>(context,
-                                    listen: false)
-                                .userCortesTotal
-                                .length,
-                            progress: calcularProgresso(),
-                            imageSize: widget.widhTela / 5.5,
-                            widghTela: widget.widhTela,
-                            imageUrl: urlImagePhoto != null
-                                ? urlImagePhoto!
-                                : Estabelecimento.defaultAvatar,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 20,
+              child: ProfissionalCode(
+                corte: CorteClass(
+                  isActive: _listaCortesUsuario.isActive,
+                  DiaDoCorte: _listaCortesUsuario.DiaDoCorte,
+                  NomeMes: _listaCortesUsuario.NomeMes,
+                  dateCreateAgendamento:
+                      _listaCortesUsuario.dateCreateAgendamento,
+                  clientName: "${_listaCortesUsuario.clientName}",
+                  id: "${_listaCortesUsuario.id}",
+                  numeroContato: "${_listaCortesUsuario.numeroContato}",
+                  profissionalSelect:
+                      "${_listaCortesUsuario.profissionalSelect}",
+                  diaCorte: _listaCortesUsuario.diaCorte,
+                  horarioCorte: "${_listaCortesUsuario.horarioCorte}",
+                  sobrancelha: _listaCortesUsuario.sobrancelha,
+                  ramdomCode: _listaCortesUsuario.ramdomCode,
                 ),
               ),
             ),
-            ProfissionalCode(
-              corte: CorteClass(
-                isActive: _listaCortesUsuario.isActive,
-                DiaDoCorte: _listaCortesUsuario.DiaDoCorte,
-                NomeMes: _listaCortesUsuario.NomeMes,
-                dateCreateAgendamento:
-                    _listaCortesUsuario.dateCreateAgendamento,
-                clientName: "${_listaCortesUsuario.clientName}",
-                id: "${_listaCortesUsuario.id}",
-                numeroContato: "${_listaCortesUsuario.numeroContato}",
-                profissionalSelect: "${_listaCortesUsuario.profissionalSelect}",
-                diaCorte: _listaCortesUsuario.diaCorte,
-                horarioCorte: "${_listaCortesUsuario.horarioCorte}",
-                sobrancelha: _listaCortesUsuario.sobrancelha,
-                ramdomCode: _listaCortesUsuario.ramdomCode,
-              ),
-            )
           ],
         ),
       ),

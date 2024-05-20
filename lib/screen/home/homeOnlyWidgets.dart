@@ -26,6 +26,7 @@ class _HomeOnlyWidgetsState extends State<HomeOnlyWidgets> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<CorteProvider>(context, listen: false).loadHistoryCortes();
     Provider.of<CorteProvider>(context, listen: false).userCortesTotal;
     Provider.of<RankingProvider>(context, listen: false).loadingListUsers();
     Provider.of<RankingProvider>(context, listen: false).listaUsers;

@@ -26,10 +26,11 @@ class _HomeScreen01State extends State<HomeScreen01> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    Provider.of<CorteProvider>(context, listen: false).cortesStream;
     Provider.of<CorteProvider>(context, listen: false).loadHistoryCortes();
     Provider.of<ManagerScreenFunctions>(context, listen: false).loadClientes();
-     Provider.of<ManagerScreenFunctions>(context, listen: false).loadMonthCortes();
+    Provider.of<ManagerScreenFunctions>(context, listen: false)
+        .loadMonthCortes();
     _screensSelect = [
       {
         'tela': const HomeOnlyWidgets(),

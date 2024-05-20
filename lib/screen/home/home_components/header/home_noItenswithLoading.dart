@@ -63,7 +63,7 @@ class _Home_noItensWithLoadinState extends State<Home_noItensWithLoadin> {
     }
   }
 
-  String? userName;
+  String userName = "...";
   Future<void> loadUserName() async {
     String? usuario = await MyProfileScreenFunctions().getUserName();
 
@@ -73,12 +73,12 @@ class _Home_noItensWithLoadinState extends State<Home_noItensWithLoadin> {
     }
 
     setState(() {
-      userName = usuario;
+      userName = usuario!;
       splitName();
     });
   }
 
-  String? finalName;
+  String finalName = "";
   Future<void> splitName() async {
     List<String> partes = userName!.split(" ");
     String userFirst = partes[0];
@@ -87,6 +87,7 @@ class _Home_noItensWithLoadinState extends State<Home_noItensWithLoadin> {
       finalName = userFirst;
     });
   }
+
   double valorPoints = 0;
   Future<void> ajustePoints() async {
     int PointOfClient = Provider.of<CorteProvider>(context, listen: false)
@@ -102,6 +103,7 @@ class _Home_noItensWithLoadinState extends State<Home_noItensWithLoadin> {
     // Calcula o progresso com base nos pontos acumulados
     return valorPoints / 12.0;
   }
+
   @override
   Widget build(BuildContext context) {
     final tamanhoTela = MediaQuery.of(context).size;
@@ -112,18 +114,18 @@ class _Home_noItensWithLoadinState extends State<Home_noItensWithLoadin> {
         : heighTelaFinal < 500
             ? heighTelaFinal / 2.1
             : heighTelaFinal / 1.9;
-    return ConstrainedBox(
+    return Container(
       constraints: BoxConstraints(
-        minHeight: setHeigh * 0.85,
-        maxHeight: setHeigh * 0.85,
+        minHeight: setHeigh,
+        maxHeight: setHeigh,
         minWidth: widget.widhTela,
         maxWidth: widget.widhTela,
       ),
       child: Container(
-        padding: const EdgeInsets.only(top: 5),
+         padding: EdgeInsets.only(top: setHeigh * 0.09),
         child: Stack(
           children: [
-            ConstrainedBox(
+            Container(
               constraints: BoxConstraints(
                 minHeight: setHeigh * 0.85,
                 maxHeight: setHeigh * 0.85,
@@ -141,84 +143,86 @@ class _Home_noItensWithLoadinState extends State<Home_noItensWithLoadin> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 45, right: 15),
-              child: Positioned(
-                top: 0,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          textAlign: TextAlign.center,
-                          Estabelecimento.nomeLocal,
-                          style: GoogleFonts.openSans(
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Estabelecimento.secondaryColor,
-                            ),
+            Positioned(
+              top: 0,
+              left: 15,
+              right: 15,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        textAlign: TextAlign.center,
+                        Estabelecimento.nomeLocal,
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Estabelecimento.secondaryColor,
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Bem-vindo(a), ${finalName ?? "..."}",
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.openSans(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Você Possui ${(valorPoints * 3).toStringAsFixed(0)} Pontos",
+                              style: GoogleFonts.openSans(
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey.shade700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        CircularProgressWithImage(
+                          totalCortes:
+                              Provider.of<CorteProvider>(context, listen: false)
+                                  .userCortesTotal
+                                  .length,
+                          progress: calcularProgresso(),
+                          imageSize: widget.widhTela / 5.5,
+                          widghTela: widget.widhTela,
+                          imageUrl: urlImagePhoto != null
+                              ? urlImagePhoto!
+                              : Estabelecimento.defaultAvatar,
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Bem-vindo(a), ${finalName ?? "..."}",
-                                style: GoogleFonts.openSans(
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                  "Você Possui ${(valorPoints * 3).toStringAsFixed(0)} Pontos",
-                                style: GoogleFonts.openSans(
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade700,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          CircularProgressWithImage(
-                            totalCortes: Provider.of<CorteProvider>(context,
-                                    listen: false)
-                                .userCortesTotal
-                                .length,
-                            progress: calcularProgresso(),
-                            imageSize: widget.widhTela / 5.5,
-                            widghTela: widget.widhTela,
-                            imageUrl: urlImagePhoto != null
-                                ? urlImagePhoto!
-                                : Estabelecimento.defaultAvatar,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            Positioned(bottom: 0,
+                  Positioned(
+              bottom: 0,
               child: Container(
                 width: widget.widhTela,
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 height: widget.widhTela / 2.3,
                 child: CircularProgressIndicator.adaptive(),
               ),
             ),
+
           ],
         ),
       ),

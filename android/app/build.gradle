@@ -27,39 +27,50 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.lionsbarbeariaeasecorte.barbearia"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
+    compileSdkVersion 34
+    buildToolsVersion "31.0.0"
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // TODO: Especifique o ID de aplicativo único (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.lionsbarbeariaeasecorte.barbearia"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        // Você pode atualizar os seguintes valores para corresponder às necessidades do seu aplicativo.
+        // Para mais informações, consulte: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        minSdkVersion 21
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
     }
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            // Configurações de otimização para a versão de release
+            minifyEnabled false
+            shrinkResources false
+            // Configura a assinatura para a versão de release
+            // Lembre-se de configurar as chaves de assinatura corretas para a versão de release
+            // Proguard foi desativado para simplificar
+        }
+    }
+    // Configuração de assinatura para a versão de release
+    signingConfigs {
+        release {
+            // Substitua as linhas abaixo pelos detalhes da sua chave de assinatura de release
+            keyAlias 'lionsBarber'
+            keyPassword 'lionssenhaprivada'
+            storeFile file('/Volumes/GabrielPc/Documentos-new/barbearias/LionsBarber/lionsBarberKeyStore.jks')
+            storePassword 'lionsSenha'
+        }
+    }
+    // Utilize as configurações de assinatura para a versão de release
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -70,4 +81,5 @@ flutter {
 
 dependencies {
     implementation 'com.android.support:multidex:2.0.1'
+    // Outras dependências...
 }

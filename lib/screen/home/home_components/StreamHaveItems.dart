@@ -10,7 +10,7 @@ class StreamHaveItens extends StatefulWidget {
   final double widhTela;
   final double heighTela;
 
-  const StreamHaveItens(
+   StreamHaveItens(
       {super.key, required this.heighTela, required this.widhTela});
 
   @override
@@ -18,12 +18,6 @@ class StreamHaveItens extends StatefulWidget {
 }
 
 class _StreamHaveItensState extends State<StreamHaveItens> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Provider.of<CorteProvider>(context, listen: false).loadHistoryCortes();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +25,7 @@ class _StreamHaveItensState extends State<StreamHaveItens> {
       stream: Provider.of<CorteProvider>(context, listen: true).cortesStream,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
+          print("ABC: conexao state");
           return Home_noItensWithLoadin(
             heighTela: widget.heighTela,
             widhTela: widget.widhTela,
@@ -41,17 +36,20 @@ class _StreamHaveItensState extends State<StreamHaveItens> {
           final List<CorteClass>? cortes = snapshot.data;
 
           if (cortes != null && cortes.isNotEmpty && cortes[0].isActive == true) {
+            print("ABC: tem itens");
             // Se houver itens na lista, mostre o widget correspondente
             return HomePageHeader(
               heighTela: widget.heighTela,
               widhTela: widget.widhTela,
             );
           } else {
+            print("ABC: Naotem itens");
             // Se a lista estiver vazia, mostre o widget correspondente
             return HomeHeaderSemLista(
               heighTela: widget.heighTela,
               widhTela: widget.widhTela,
             );
+
           }
         }
       },
