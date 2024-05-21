@@ -148,7 +148,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
         maxWidth: widget.widhTela,
       ),
       child: Container(
-         padding: EdgeInsets.only(top: setHeigh * 0.09),
+         //padding: EdgeInsets.only(top: setHeigh * 0.09),
         child: Stack(
           children: [
             Container(
@@ -159,6 +159,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                 maxWidth: widget.widhTela,
               ),
               child: Container(
+              //  padding: EdgeInsets.only(top: 40),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Estabelecimento.secondaryColor.withOpacity(0.1),

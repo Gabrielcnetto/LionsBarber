@@ -47,30 +47,32 @@ class _HomeOnlyWidgetsState extends State<HomeOnlyWidgets> {
             1
         ? true
         : false;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            StreamHaveItens(
-              heighTela: heighTela,
-              widhTela: widhtTela,
-            ),
-            ProfissionaisList(
-              heighScreen: heighTela,
-              widhScreen: widhtTela,
-            ),
-            PromotionBannerComponents(
-              widhtTela: widhtTela,
-            ),
-            rankingTamanho >= 5
-                ? RankingHome(
-                    heighScreen: heighTela,
-                    widhScreen: widhtTela,
-                  )
-                : RankingSemUsuarios(),
-          ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StreamHaveItens(
+                heighTela: heighTela,
+                widhTela: widhtTela,
+              ),
+              ProfissionaisList(
+                heighScreen: heighTela,
+                widhScreen: widhtTela,
+              ),
+              PromotionBannerComponents(
+                widhtTela: widhtTela,
+              ),
+              rankingTamanho >= 5
+                  ? RankingHome(
+                      heighScreen: heighTela,
+                      widhScreen: widhtTela,
+                    )
+                  : RankingSemUsuarios(),
+            ],
+          ),
         ),
       ),
     );
