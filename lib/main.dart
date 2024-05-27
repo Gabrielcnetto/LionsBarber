@@ -14,7 +14,6 @@ import 'package:barbershop2/screen/inicio/initialScreen.dart';
 import 'package:barbershop2/screen/login/loginScreen.dart';
 import 'package:barbershop2/screen/manager/ManagerScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
